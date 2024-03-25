@@ -15,7 +15,7 @@ After setting up Python and Azure, you can start by cloning this repository. The
 To clone the repository and install the requirements, open a command line interface on VS Code or any other terminal and run the following commands:  
 ```  
 git clone https://github.com/Hamza-Bouzoubaa/MSLA_AZURE_EVENT.git
-pip install -r requirements.txt  
+pip install -r requirement.txt  
 ```  
    
 ## Azure Setup  
@@ -175,7 +175,7 @@ Lastly, complete the `GPTanswer.py`.
    
 1. **generate_response:** This function generates an answer given a question and a source. We ask GPT to give us an answer to this question using this source.
 ```
-   def generate_response(Question,Sources):
+   def generate_response(Question,Sources,ChatHistory):
 
     LLM = AzureChatOpenAI(
     openai_api_version="2023-05-15",
@@ -183,19 +183,19 @@ Lastly, complete the `GPTanswer.py`.
     )
 
     Prompt = PromptTemplate(  
-    input_variables=["Question","Sources"],  
+    input_variables=["Question","Sources","ChatHistory"],  
     template=system_prompt  
     ) 
     
     Chain = LLMChain(llm=LLM, prompt=Prompt)
-    response = Chain.run(Question = Question,Sources=Sources)
+    response = Chain.run(Question = Question,Sources=Sources,ChatHistory=ChatHistory)
     return response
 ```
 
    
 ## Run the Application  
 After completing all the functions in the three files, you can run the `frontend.py` file. This combines all the functions into a functional frontend.  
-```streamlit run frontend.py```
+```python -m streamlit run frontend.py```
    
 ## Conclusion  
 Follow all the steps mentioned above and you will have a working customizable chat bot powered by OpenAI and Azure. Happy coding!
