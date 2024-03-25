@@ -3,6 +3,7 @@ from GPTanswer import generate_response
 import os   
 from Vectordb import CreateDB,InsertDocument,SearchContainer
 from dotenv import load_dotenv
+from collections import deque  
 
 load_dotenv()
 
@@ -13,7 +14,11 @@ AZURE_OPENAI_ENDPOINT = os.getenv('AZURE_OPENAI_ENDPOINT')
 
 container = CreateDB()
 print("Container created")
-  
+
+# Initialize chat history  
+if "chat_history" not in st.session_state:  
+    st.session_state.chat_history = []  
+
 def save_uploaded_file(directory: str, file):    
     """Save uploaded file to the specified directory and return the path."""    
     if not os.path.exists(directory):    
@@ -39,16 +44,24 @@ def main():
                         
         st.sidebar.success('File uploaded and processed successfully.')      
     st.header('Ask your document')        
-    user_query = st.text_input('Type your question here...')      
+    user_query = st.chat_input('Type your question here...')      
             
-    if st.button('Search'):        
-        #result = SearchInPineconeIndex(PINECONE_API_KEY,OPENAI_KEY,"docusearch",user_input,st.session_state["user"],7)    
-        #result = SearchInPineconeIndex(PINECONE_API_KEY,AZURE_OPENAI_KEY,"ustudy",user_input,"syllabus",7)    
+    if user_query:        
+            
+
+        st.session_state.chat_history.append({"role": "user", "content": user_query})  
 
         result = SearchContainer(container,user_query,3)
         print(result)
-        answer = generate_response(user_query,result)      
-        st.write(answer)        
+        answer = generate_response(user_query,result,ChatHistory=st.session_state.chat_history)  
+        print(st.session_state.chat_history)
+         # Add AI response to chat history  
+        st.session_state.chat_history.append({"role": "assistant", "content": answer})    
+
+         # Display chat history  
+        for chat in st.session_state.chat_history:  
+            with st.chat_message(chat['role']):  
+                st.write(chat['content'])       
         
 if __name__ == "__main__":        
     main()    
