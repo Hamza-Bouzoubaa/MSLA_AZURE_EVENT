@@ -195,7 +195,7 @@ Lastly, complete the `GPTanswer.py`.
    
 ## Run the Application  
 After completing all the functions in the three files, you can run the `frontend.py` file. This combines all the functions into a functional frontend.  
-```python -m streamlit run frontend.py```
+```python -m streamlit run FrontEnd.py```
    
 ## Conclusion  
 Follow all the steps mentioned above and you will have a working customizable chat bot powered by OpenAI and Azure. Happy coding!
