@@ -39,4 +39,3 @@ def generate_response(Question,Sources):
 
 
 
-print(generate_response("What is the capital of France?",["Paris is the capital of France."]))
